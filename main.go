@@ -1,8 +1,0 @@
-//Test pkg
-package main
-
-import "fmt"
-
-func main() {
-	fmt.Println("Ololo")
-}
