@@ -1,4 +1,6 @@
-# demux
+# Demux
+[![Go Reference](https://pkg.go.dev/badge/github.com/eastata/go-demux.svg)](https://pkg.go.dev/github.com/eastata/go-demux)
+
 Runs a task in parallel
 
 ## Usage
