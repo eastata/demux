@@ -1,17 +1,25 @@
 package main
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
-func TestPlaceholder(t *testing.T) {
-	x := 10
-	got := placeholder(x)
-	if got != 10 {
-		t.Errorf("Expected: %v\t Got: %v", 10, got)
+func TestWorker(t *testing.T) {
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	err := worker(&wg, []int{1, 2})
+	if err != nil {
+		t.Errorf("%v", err)
 	}
+	wg.Wait()
 }
 
-func BenchmarkPlaceholder(b *testing.B) {
+func BenchmarkWorker(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		placeholder(10)
+		wg := sync.WaitGroup{}
+		wg.Add(1)
+		worker(&wg, []int{1, 2})
+		wg.Wait()
 	}
 }
