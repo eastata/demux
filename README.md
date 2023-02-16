@@ -1,5 +1,6 @@
 # Demux
-[![Go Reference](https://pkg.go.dev/badge/github.com/eastata/demux.svg)](https://pkg.go.dev/github.com/eastata/demux)
+[![Go Reference](https://pkg.go.dev/badge/github.com/eastata/demux.svg)](https://pkg.go.dev/github.com/eastata/demux) 
+[![codecov](https://codecov.io/gh/eastata/demux/branch/main/graph/badge.svg?token=9S3GK2DBP5)](https://codecov.io/gh/eastata/demux)
 
 Runs a task in parallel
 
