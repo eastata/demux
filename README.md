@@ -1,12 +1,12 @@
 # Demux
-[![Go Reference](https://pkg.go.dev/badge/github.com/eastata/go-demux.svg)](https://pkg.go.dev/github.com/eastata/go-demux)
+[![Go Reference](https://pkg.go.dev/badge/github.com/eastata/demux.svg)](https://pkg.go.dev/github.com/eastata/demux)
 
 Runs a task in parallel
 
 ## Usage
 ```shell
-git clone git@github.com:eastata/go-demux.git
-cd go-demux/cmd/demux
+git clone git@github.com:eastata/demux.git
+cd demux/cmd/demux
 go run main.go
 ```
 
