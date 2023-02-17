@@ -13,8 +13,14 @@ type job struct {
 	data []int
 }
 
+type jobResponse struct {
+	id  uuid.UUID
+	out int
+}
+
 func main() {
 	jobslist := jobsGenerator()
+	fmt.Println(len(jobslist))
 	scheduler(jobslist)
 }
 
@@ -43,23 +49,28 @@ func scheduler(joblist []job) {
 
 	wg := sync.WaitGroup{}
 
+	ch := make(chan jobResponse)
 	for _, v := range joblist {
 		wg.Add(1)
-		go worker(&wg, v)
+		go worker(&wg, ch, v)
 	}
-	fmt.Println("Num Goroutine: ", runtime.NumGoroutine())
 
-	wg.Wait()
-	fmt.Println("Num Goroutine: ", runtime.NumGoroutine())
+	for jb := range ch {
+		fmt.Println(jb)
+	}
+	//wg.Wait()
+	close(ch)
+	//fmt.Println("Num Goroutine: ", runtime.NumGoroutine())
+
 }
 
-func worker(w *sync.WaitGroup, jb job) error {
-	sum := 0
+func worker(w *sync.WaitGroup, ch chan<- jobResponse, jb job) error {
+	resp := jobResponse{id: jb.id, out: 0}
 	for _, v := range jb.data {
-		sum += v
+		resp.out += v
 	}
 	runtime.Gosched()
-	fmt.Println("Job: ", jb.id.String(), "\tSUM: ", sum)
+	ch <- resp
 	w.Done()
 	return nil
 }
