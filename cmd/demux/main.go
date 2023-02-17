@@ -20,7 +20,6 @@ type jobResponse struct {
 
 func main() {
 	jobslist := jobsGenerator()
-	fmt.Println(len(jobslist))
 	scheduler(jobslist)
 }
 
