@@ -2,21 +2,42 @@ package main
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"math/rand"
 	"runtime"
 	"sync"
 )
 
-func main() {
-	joblist := make([][]int, 0)
-	for i := 0; i < 100; i++ {
-		joblist = append(joblist, []int{rand.Intn(100), rand.Intn(100)})
-	}
-
-	scheduler(joblist)
+type job struct {
+	id   uuid.UUID
+	data []int
 }
 
-func scheduler(joblist [][]int) {
+func main() {
+	jobslist := jobsGenerator()
+	scheduler(jobslist)
+}
+
+func jobsGenerator() []job {
+	var (
+		jb job
+		id uuid.UUID
+	)
+
+	// uuid.EnableRandPool() are not thread-safe and should only be called when there is no possibility that uuid.New()
+	// generation function will be called concurrently.
+	uuid.EnableRandPool()
+
+	jobs := make([]job, 0)
+	for i := 0; i < 100; i++ {
+		id = uuid.New()
+		jb = job{id, []int{rand.Intn(100), rand.Intn(100)}}
+		jobs = append(jobs, jb)
+	}
+	return jobs
+}
+
+func scheduler(joblist []job) {
 	//cpu := runtime.NumCPU()
 	//fmt.Println("Num CPU: ", cpu)
 
@@ -32,13 +53,13 @@ func scheduler(joblist [][]int) {
 	fmt.Println("Num Goroutine: ", runtime.NumGoroutine())
 }
 
-func worker(w *sync.WaitGroup, job []int) error {
+func worker(w *sync.WaitGroup, jb job) error {
 	sum := 0
-	for _, v := range job {
+	for _, v := range jb.data {
 		sum += v
 	}
 	runtime.Gosched()
-	fmt.Println("Job: ", job, "\tSUM: ", sum)
+	fmt.Println("Job: ", jb.id.String(), "\tSUM: ", sum)
 	w.Done()
 	return nil
 }
