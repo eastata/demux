@@ -19,6 +19,18 @@ func BenchmarkJonsGenerator(b *testing.B) {
 	}
 }
 
+func TestShceduler(t *testing.T) {
+	jobs := jobsGenerator()
+	scheduler(jobs)
+}
+
+func BenchmarkScheduler(b *testing.B) {
+	jobs := jobsGenerator()
+	for i := 0; i < b.N; i++ {
+		scheduler(jobs)
+	}
+}
+
 func TestWorker(t *testing.T) {
 	jb := job{id: uuid.New(), data: []int{1, 2}}
 
