@@ -6,6 +6,19 @@ import (
 	"testing"
 )
 
+func TestJobsGenerator(t *testing.T) {
+	jobs := jobsGenerator()
+	if jobs[0].id == jobs[2].id {
+		t.Errorf("Collision for generated jobs UUID")
+	}
+}
+
+func BenchmarkJonsGenerator(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		jobsGenerator()
+	}
+}
+
 func TestWorker(t *testing.T) {
 	jb := job{id: uuid.New(), data: []int{1, 2}}
 
