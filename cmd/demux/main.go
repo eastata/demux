@@ -1,16 +1,19 @@
 package main
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"math/rand"
 	"runtime"
-	"sync"
 )
 
 type job struct {
 	id   uuid.UUID
 	data []int
+}
+
+type jobResponse struct {
+	id  uuid.UUID
+	out int
 }
 
 func main() {
@@ -41,25 +44,25 @@ func scheduler(joblist []job) {
 	//cpu := runtime.NumCPU()
 	//fmt.Println("Num CPU: ", cpu)
 
-	wg := sync.WaitGroup{}
-
+	ch := make(chan jobResponse)
 	for _, v := range joblist {
-		wg.Add(1)
-		go worker(&wg, v)
+		go worker(ch, v)
 	}
-	fmt.Println("Num Goroutine: ", runtime.NumGoroutine())
 
-	wg.Wait()
-	fmt.Println("Num Goroutine: ", runtime.NumGoroutine())
+	for i := 0; i < len(joblist); i++ {
+		//There is a jobs response output
+		//fmt.Println(<-ch)
+		<-ch
+	}
+
 }
 
-func worker(w *sync.WaitGroup, jb job) error {
-	sum := 0
+func worker(ch chan<- jobResponse, jb job) error {
+	resp := jobResponse{id: jb.id, out: 0}
 	for _, v := range jb.data {
-		sum += v
+		resp.out += v
 	}
 	runtime.Gosched()
-	fmt.Println("Job: ", jb.id.String(), "\tSUM: ", sum)
-	w.Done()
+	ch <- resp
 	return nil
 }

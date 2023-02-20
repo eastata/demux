@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/google/uuid"
-	"sync"
 	"testing"
 )
 
@@ -34,21 +33,27 @@ func BenchmarkScheduler(b *testing.B) {
 func TestWorker(t *testing.T) {
 	jb := job{id: uuid.New(), data: []int{1, 2}}
 
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-	err := worker(&wg, jb)
+	ch := make(chan jobResponse, 1)
+
+	err := worker(ch, jb)
 	if err != nil {
 		t.Errorf("%v", err)
 	}
-	wg.Wait()
+	close(ch)
 }
 
 func BenchmarkWorker(b *testing.B) {
 	jb := job{id: uuid.New(), data: []int{1, 2}}
+	ch := make(chan jobResponse)
+
+	go func() {
+		for i := 0; i < b.N; i++ {
+			<-ch
+		}
+	}()
+
 	for i := 0; i < b.N; i++ {
-		wg := sync.WaitGroup{}
-		wg.Add(1)
-		worker(&wg, jb)
-		wg.Wait()
+		worker(ch, jb)
+
 	}
 }
