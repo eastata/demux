@@ -41,8 +41,6 @@ func jobsGenerator() []job {
 }
 
 func scheduler(joblist []job) {
-	//cpu := runtime.NumCPU()
-	//fmt.Println("Num CPU: ", cpu)
 
 	ch := make(chan jobResponse)
 	for _, v := range joblist {
