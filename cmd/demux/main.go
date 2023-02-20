@@ -5,7 +5,6 @@ import (
 	"github.com/google/uuid"
 	"math/rand"
 	"runtime"
-	"sync"
 )
 
 type job struct {
@@ -46,29 +45,23 @@ func scheduler(joblist []job) {
 	//cpu := runtime.NumCPU()
 	//fmt.Println("Num CPU: ", cpu)
 
-	wg := sync.WaitGroup{}
-
 	ch := make(chan jobResponse)
 	for _, v := range joblist {
-		wg.Add(1)
-		go worker(&wg, ch, v)
+		go worker(ch, v)
 	}
 
 	for i := 0; i < len(joblist); i++ {
 		fmt.Println(<-ch)
 	}
 
-	wg.Wait()
-
 }
 
-func worker(w *sync.WaitGroup, ch chan<- jobResponse, jb job) error {
+func worker(ch chan<- jobResponse, jb job) error {
 	resp := jobResponse{id: jb.id, out: 0}
 	for _, v := range jb.data {
 		resp.out += v
 	}
 	runtime.Gosched()
 	ch <- resp
-	w.Done()
 	return nil
 }
