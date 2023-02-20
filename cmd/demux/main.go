@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/google/uuid"
 	"math/rand"
 	"runtime"
@@ -51,7 +50,9 @@ func scheduler(joblist []job) {
 	}
 
 	for i := 0; i < len(joblist); i++ {
-		fmt.Println(<-ch)
+		//There is a jobs response output
+		//fmt.Println(<-ch)
+		<-ch
 	}
 
 }
