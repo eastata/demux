@@ -54,12 +54,11 @@ func scheduler(joblist []job) {
 		go worker(&wg, ch, v)
 	}
 
-	for jb := range ch {
-		fmt.Println(jb)
+	for i := 0; i < len(joblist); i++ {
+		fmt.Println(<-ch)
 	}
-	//wg.Wait()
-	close(ch)
-	//fmt.Println("Num Goroutine: ", runtime.NumGoroutine())
+
+	wg.Wait()
 
 }
 
