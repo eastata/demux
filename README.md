@@ -20,3 +20,26 @@ go test -coverprofile coverage.out ./...
 # Check coverage
 go tool cover -html=c.out
 ```
+
+## Makefile draft
+```shell
+# Cleanup swagger-ui
+
+SWAGGER_VERSION="4.16.1"
+rm -rf ./swaggerui/*
+wget https://github.com/swagger-api/swagger-ui/archive/refs/tags/v$SWAGGER_VERSION.tar.gz
+mkdir ./swagger_tmp
+tar -C ./swagger_tmp -xvf ./v$SWAGGER_VERSION.tar.gz swagger-ui-$SWAGGER_VERSION/dist 
+mv ./swagger_tmp/swagger-ui-$SWAGGER_VERSION/dist/* ./swaggerui
+rm -rf ./swagger_tmp
+rm v$SWAGGER_VERSION.tar.gz
+
+# swaggerui/swagger-initializer.js
+# !install GNU sed for MacOS!
+sed -i "s/https\:\/\/petstore\.swagger\.io\/v2\/swagger\.json/.\/swagger.json/" swaggerui/swagger-initializer.js
+
+# Generate swagger yaml spec
+swagger generate spec -o ./swaggerui/swagger.json -m -w ./cmd/demux/
+
+
+```

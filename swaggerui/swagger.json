@@ -1,0 +1,77 @@
+{
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "Comapany Eastata:",
+    "version": "0.0.1"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "paths": {
+    "/": {
+      "post": {
+        "security": [
+          {
+            "apiKey": [
+              "[]"
+            ]
+          }
+        ],
+        "description": "Submit job",
+        "tags": [
+          "admin"
+        ],
+        "operationId": "JobSubmit",
+        "responses": {
+          "401": {
+            "description": "CommonError",
+            "schema": {
+              "$ref": "#/definitions/CommonError"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CommonError": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "description": "Message of the error\nin: string",
+          "type": "string",
+          "x-go-name": "Message"
+        },
+        "status": {
+          "description": "Status of the error\nin: int64",
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Status"
+        }
+      },
+      "x-go-package": "github.com/eastata/demux/cmd/demux"
+    },
+    "JobSubmit": {
+      "type": "object",
+      "properties": {
+        "job": {
+          "description": "Slice of int to sum\nin: int64",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "x-go-name": "Jobs"
+        }
+      },
+      "x-go-name": "jobRequest",
+      "x-go-package": "github.com/eastata/demux/cmd/demux"
+    }
+  }
+}
