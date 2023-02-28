@@ -5,11 +5,23 @@
 Runs a task in parallel
 
 ## Usage
+
+### cli
+
 ```shell
 git clone git@github.com:eastata/demux.git
-cd demux/cmd/demux
+cd demux/cmd/cli
 go run main.go
 ```
+
+### API server
+
+```shell
+git clone git@github.com:eastata/demux.git
+cd demux/cmd/api-server
+go run main.go
+```
+
 ## Swagger UI
 
 [http://127.0.0.1:8080/swaggerui/](http://127.0.0.1:8080/swaggerui/)
