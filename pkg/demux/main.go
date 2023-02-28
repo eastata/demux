@@ -46,7 +46,7 @@ func Scheduler(joblist []job) {
 	for i := 0; i < len(joblist); i++ {
 		//There is a jobs response output
 		fmt.Println(<-ch)
-		<-ch
+		//<-ch
 	}
 
 }
