@@ -45,6 +45,10 @@ func main() {
 
 	router := mux.NewRouter()
 
+	// Swagger UI from filesystem
+	fs := http.FileServer(http.Dir("./swaggerui"))
+	router.Handle("/swaggerui/{rest}", http.StripPrefix("/swaggerui", fs))
+
 	router.HandleFunc("/", JobSubmit).Methods("POST")
 
 	srv := &http.Server{

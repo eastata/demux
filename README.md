@@ -10,6 +10,9 @@ git clone git@github.com:eastata/demux.git
 cd demux/cmd/demux
 go run main.go
 ```
+## Swagger UI
+
+[http://127.0.0.1:8080/swaggerui/](http://127.0.0.1:8080/swaggerui/)
 
 ## Tests
 ```shell
