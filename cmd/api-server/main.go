@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/eastata/demux/pkg/demux"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -23,7 +24,7 @@ type CommonError struct {
 type jobRequest struct {
 	// Slice of int to sum
 	// in: int64
-	Jobs []int64 `json:"job" validate:"required,gt=1,drive,numeric"`
+	Job []int64 `json:"job" validate:"required,gt=1,drive,numeric"`
 }
 
 func main() {
@@ -61,6 +62,10 @@ func JobSubmit(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
+
+	jb := demux.NewJob(v.Job)
+	demux.Scheduler([]demux.Job{jb})
+
 	fmt.Println(v)
 	fmt.Fprintf(w, "Body: %+v", v)
 

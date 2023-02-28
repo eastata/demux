@@ -7,19 +7,32 @@ import (
 	"runtime"
 )
 
-type job struct {
+type Job struct {
 	id   uuid.UUID
-	data []int
+	data []int64
 }
 
 type jobResponse struct {
 	id  uuid.UUID
-	out int
+	out int64
 }
 
-func JobsGenerator() []job {
+func NewJob(data []int64) Job {
 	var (
-		jb job
+		jb Job
+		id uuid.UUID
+	)
+	uuid.EnableRandPool()
+
+	id = uuid.New()
+	jb = Job{id, data}
+	return jb
+
+}
+
+func JobsGenerator() []Job {
+	var (
+		jb Job
 		id uuid.UUID
 	)
 
@@ -27,16 +40,16 @@ func JobsGenerator() []job {
 	// generation function will be called concurrently.
 	uuid.EnableRandPool()
 
-	jobs := make([]job, 0)
+	jobs := make([]Job, 0)
 	for i := 0; i < 100; i++ {
 		id = uuid.New()
-		jb = job{id, []int{rand.Intn(100), rand.Intn(100)}}
+		jb = Job{id, []int64{int64(rand.Int63n(100)), rand.Int63n(100)}}
 		jobs = append(jobs, jb)
 	}
 	return jobs
 }
 
-func Scheduler(joblist []job) {
+func Scheduler(joblist []Job) {
 
 	ch := make(chan jobResponse)
 	for _, v := range joblist {
@@ -51,7 +64,7 @@ func Scheduler(joblist []job) {
 
 }
 
-func worker(ch chan<- jobResponse, jb job) error {
+func worker(ch chan<- jobResponse, jb Job) error {
 	resp := jobResponse{id: jb.id, out: 0}
 	for _, v := range jb.data {
 		resp.out += v

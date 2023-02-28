@@ -31,7 +31,7 @@ func BenchmarkScheduler(b *testing.B) {
 }
 
 func TestWorker(t *testing.T) {
-	jb := job{id: uuid.New(), data: []int{1, 2}}
+	jb := Job{id: uuid.New(), data: []int64{1, 2}}
 
 	ch := make(chan jobResponse, 1)
 
@@ -43,7 +43,7 @@ func TestWorker(t *testing.T) {
 }
 
 func BenchmarkWorker(b *testing.B) {
-	jb := job{id: uuid.New(), data: []int{1, 2}}
+	jb := Job{id: uuid.New(), data: []int64{1, 2}}
 	ch := make(chan jobResponse)
 
 	go func() {
