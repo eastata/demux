@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"flag"
 	"github.com/eastata/demux/pkg/demux"
 	"github.com/gorilla/mux"
 	"log"
@@ -20,21 +20,30 @@ type CommonError struct {
 	Message string `json:"message"`
 }
 
-// swagger:model JobSubmit
+// swagger:parameters admin JobSubmit
 type jobRequest struct {
-	// Slice of int to sum
-	// in: int64
+	// Slice of int64 to sum
+	// in: body
+	// schema:
+	// 	type: object
+	// 	required:
+	// 		- body
+	// 	properties: {body: {type: array, items: [int64]}}
 	Job []int64 `json:"job" validate:"required,gt=1,drive,numeric"`
 }
 
 func main() {
 	router := mux.NewRouter()
 
-	// Swagger UI from filesystem
-	fs := http.FileServer(http.Dir("./swaggerui"))
-	router.Handle("/swaggerui/{rest}", http.StripPrefix("/swaggerui", fs))
+	router.HandleFunc("/job_submit", JobSubmit).Methods("POST")
 
-	router.HandleFunc("/", JobSubmit).Methods("POST")
+	// Swagger UI from filesystem
+	// This will serve files under http://localhost:8000/swaggerui/<filename>
+	var dir string
+	flag.StringVar(&dir, "dir", "./swaggerui/", "the directory to serve files from. Defaults to the current dir")
+	flag.Parse()
+
+	router.PathPrefix("").Handler(http.StripPrefix("/swaggerui/", http.FileServer(http.Dir("./swaggerui"))))
 
 	srv := &http.Server{
 		Handler:      router,
@@ -47,11 +56,12 @@ func main() {
 
 }
 
-// swagger:route POST / admin JobSubmit
-// Submit job
+// swagger:route POST /job_submit admin JobSubmit
+// Submit the job of summing the list of int64
 //
 // security:
 // - apiKey: []
+//
 // responses:
 //
 //	401: CommonError
@@ -66,7 +76,6 @@ func JobSubmit(w http.ResponseWriter, r *http.Request) {
 	jb := demux.NewJob(v.Job)
 	demux.Scheduler([]demux.Job{jb})
 
-	fmt.Println(v)
-	fmt.Fprintf(w, "Body: %+v", v)
+	json.NewEncoder(w).Encode(v)
 
 }

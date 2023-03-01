@@ -3,18 +3,17 @@
     "application/json"
   ],
   "schemes": [
-    "http",
-    "https"
+    "http"
   ],
   "swagger": "2.0",
   "info": {
-    "title": "Comapany Eastata:",
+    "title": "Demux API:",
     "version": "0.0.1"
   },
-  "host": "localhost:8080",
+  "host": "127.0.0.1:8080",
   "basePath": "/",
   "paths": {
-    "/": {
+    "/job_submit": {
       "post": {
         "security": [
           {
@@ -23,11 +22,23 @@
             ]
           }
         ],
-        "description": "Submit job",
+        "description": "Submit the job of summing the list of int64",
         "tags": [
           "admin"
         ],
         "operationId": "JobSubmit",
+        "parameters": [
+          {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-go-name": "Job",
+            "name": "job",
+            "in": "query"
+          }
+        ],
         "responses": {
           "401": {
             "description": "CommonError",
@@ -55,23 +66,7 @@
           "x-go-name": "Status"
         }
       },
-      "x-go-package": "github.com/eastata/demux/cmd/demux"
-    },
-    "JobSubmit": {
-      "type": "object",
-      "properties": {
-        "job": {
-          "description": "Slice of int to sum\nin: int64",
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "x-go-name": "Jobs"
-        }
-      },
-      "x-go-name": "jobRequest",
-      "x-go-package": "github.com/eastata/demux/cmd/demux"
+      "x-go-package": "github.com/eastata/demux/cmd/api-server"
     }
   }
 }

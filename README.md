@@ -38,6 +38,9 @@ go tool cover -html=c.out
 
 ## Makefile draft
 ```shell
+# Install swagger https://github.com/go-swagger/go-swagger
+download_url=$(curl -s https://api.github.com/repos/go-swagger/go-swagger/releases/latest | \\n  jq -r '.assets[] | select(.name | contains("'"$(uname | tr '[:upper:]' '[:lower:]')"'_amd64")) | .browser_download_url')\ncurl -o /usr/local/bin/swagger -L'#' "$download_url"\nchmod +x /usr/local/bin/swagger
+
 # Cleanup swagger-ui
 
 SWAGGER_VERSION="4.16.1"
@@ -54,7 +57,7 @@ rm v$SWAGGER_VERSION.tar.gz
 sed -i "s/https\:\/\/petstore\.swagger\.io\/v2\/swagger\.json/.\/swagger.json/" swaggerui/swagger-initializer.js
 
 # Generate swagger yaml spec
-swagger generate spec -o ./swaggerui/swagger.json -m -w ./cmd/demux/
+swagger generate spec -o ./swaggerui/swagger.json -m -w ./cmd/api-server/
 
 
 ```

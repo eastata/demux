@@ -1,8 +1,8 @@
-//	Comapany Eastata:
+//	Demux API:
 //	 version: 0.0.1
 //	 title: Demux API
-//	Schemes: http, https
-//	Host: localhost:8080
+//	Schemes: http
+//	Host: 127.0.0.1:8080
 //	BasePath: /
 //	Produces:
 //	  - application/json
