@@ -1,0 +1,75 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "API for Demux [github.com/eastata/demux/pkg/demux](https://github.com/eastata/demux/tree/main/pkg/demux)",
+    "title": "Demux API",
+    "version": "0.0.1"
+  },
+  "host": "127.0.0.1:8080",
+  "basePath": "/",
+  "paths": {
+    "/job_submit": {
+      "post": {
+        "description": "This will submit the job to demux",
+        "summary": "Submit the job for summing the list of int64",
+        "operationId": "JobSubmit",
+        "parameters": [
+          {
+            "example": "{\"data\": [5,2,7]}",
+            "x-go-name": "Data",
+            "description": "Send a json body in a request with a key \"data\" that must be a list of int64",
+            "name": "data",
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JobUUID",
+            "schema": {
+              "$ref": "#/definitions/JobUUID"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "JobUUID": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "in: string",
+          "type": "string",
+          "format": "uuid",
+          "x-go-name": "Id",
+          "example": "{\"id\": \"75a9e835-5cd6-4499-bd2a-a066e335b963\"}"
+        }
+      },
+      "x-go-name": "JobID",
+      "x-go-package": "github.com/eastata/demux/cmd/api-server"
+    }
+  },
+  "security": [
+    {
+      "api_key": [
+        "[]"
+      ]
+    }
+  ]
+}
