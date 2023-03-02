@@ -1,4 +1,7 @@
 {
+  "consumes": [
+    "application/json"
+  ],
   "produces": [
     "application/json"
   ],
@@ -7,7 +10,8 @@
   ],
   "swagger": "2.0",
   "info": {
-    "title": "Demux API:",
+    "description": "API for Demux [github.com/eastata/demux/pkg/demux](https://github.com/eastata/demux/tree/main/pkg/demux)",
+    "title": "Demux API",
     "version": "0.0.1"
   },
   "host": "127.0.0.1:8080",
@@ -15,30 +19,14 @@
   "paths": {
     "/job_submit": {
       "post": {
-        "security": [
-          {
-            "api_key": [
-              "[]"
-            ]
-          }
-        ],
-        "description": "This will submit the job to demux and return jobID",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "schemes": [
-          "http"
-        ],
-        "summary": "Submit the job of summing the list of int64",
+        "description": "This will submit the job to demux and return JobID",
+        "summary": "Submit the job for summing the list of int64",
         "operationId": "JobSubmit",
         "parameters": [
           {
-            "example": "'{\"data\": [5,2,7]}'",
+            "example": "{\"data\": [5,2,7]}",
             "x-go-name": "Data",
-            "description": "a data keys must has a list of int64",
+            "description": "Send a json body in a request with a key \"data\" that must be a list of int64",
             "name": "data",
             "in": "body",
             "schema": {
@@ -79,5 +67,12 @@
       },
       "x-go-package": "github.com/eastata/demux/cmd/api-server"
     }
-  }
+  },
+  "security": [
+    {
+      "api_key": [
+        "[]"
+      ]
+    }
+  ]
 }

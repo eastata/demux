@@ -22,7 +22,7 @@ type CommonError struct {
 
 // swagger:parameters JobSubmit
 type jobRequest struct {
-	// a data key must has a list of int64
+	// Send a json body in a request with a key "data" that must be a list of int64
 	//
 	// in: body
 	// schema:
@@ -64,16 +64,6 @@ func JobSubmit(w http.ResponseWriter, r *http.Request) {
 	//
 	// This will submit the job to demux and return JobID
 	//
-	//     Consumes:
-	//     - application/json
-	//
-	//     Produces:
-	//     - application/json
-	//
-	//     Schemes: http
-	//
-	//     Security:
-	//       api_key: []
 	//     Responses:
 	//       401: CommonError
 
