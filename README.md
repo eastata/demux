@@ -35,6 +35,19 @@ go test -coverprofile coverage.out ./...
 # Check coverage
 go tool cover -html=c.out
 ```
+## Dcoker
+
+* Build
+  ```shell
+  docker build -t eastata/demux .
+  ```
+* Run
+  ```shell
+  # CLI
+  docker run --rm -it eastata/demux cli
+  # API server
+  docker run --rm -it -p 8080:8080 eastata/demux
+  ```
 
 ## Makefile draft
 ```shell

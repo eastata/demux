@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"github.com/eastata/demux/pkg/demux"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -42,6 +43,7 @@ func main() {
 
 	router.PathPrefix("").Handler(http.StripPrefix("/swaggerui/", http.FileServer(http.Dir("./swaggerui"))))
 
+	fmt.Println("Demux API-Server is running at 127.0.0.1:8080")
 	srv := &http.Server{
 		Handler:      router,
 		Addr:         "127.0.0.1:8080",
