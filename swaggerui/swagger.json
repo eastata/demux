@@ -17,26 +17,37 @@
       "post": {
         "security": [
           {
-            "apiKey": [
+            "api_key": [
               "[]"
             ]
           }
         ],
-        "description": "Submit the job of summing the list of int64",
-        "tags": [
-          "admin"
+        "description": "This will submit the job to demux and return jobID",
+        "consumes": [
+          "application/json"
         ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "summary": "Submit the job of summing the list of int64",
         "operationId": "JobSubmit",
         "parameters": [
           {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "x-go-name": "Job",
-            "name": "job",
-            "in": "query"
+            "example": "'{\"data\": [5,2,7]}'",
+            "x-go-name": "Data",
+            "description": "a data keys must has a list of int64",
+            "name": "data",
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
           }
         ],
         "responses": {

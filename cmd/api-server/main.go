@@ -20,16 +20,15 @@ type CommonError struct {
 	Message string `json:"message"`
 }
 
-// swagger:parameters admin JobSubmit
+// swagger:parameters JobSubmit
 type jobRequest struct {
-	// Slice of int64 to sum
+	// a data key must has a list of int64
+	//
 	// in: body
 	// schema:
-	// 	type: object
-	// 	required:
-	// 		- body
-	// 	properties: {body: {type: array, items: [int64]}}
-	Job []int64 `json:"job" validate:"required,gt=1,drive,numeric"`
+	//   type: string
+	// example: {"data": [5,2,7]}
+	Data []int64 `json:"data" validate:"required,gt=1,drive,numeric"`
 }
 
 func main() {
@@ -56,16 +55,28 @@ func main() {
 
 }
 
-// swagger:route POST /job_submit admin JobSubmit
-// Submit the job of summing the list of int64
-//
-// security:
-// - apiKey: []
-//
-// responses:
-//
-//	401: CommonError
+// JobSubmit serves the submitting jobs
 func JobSubmit(w http.ResponseWriter, r *http.Request) {
+
+	// swagger:route POST /job_submit JobSubmit
+	//
+	// Submit the job for summing the list of int64
+	//
+	// This will submit the job to demux and return JobID
+	//
+	//     Consumes:
+	//     - application/json
+	//
+	//     Produces:
+	//     - application/json
+	//
+	//     Schemes: http
+	//
+	//     Security:
+	//       api_key: []
+	//     Responses:
+	//       401: CommonError
+
 	w.Header().Set("Content-Type", "application/json")
 	var v jobRequest
 	err := json.NewDecoder(r.Body).Decode(&v)
@@ -73,7 +84,7 @@ func JobSubmit(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	jb := demux.NewJob(v.Job)
+	jb := demux.NewJob(v.Data)
 	demux.Scheduler([]demux.Job{jb})
 
 	json.NewEncoder(w).Encode(v)
