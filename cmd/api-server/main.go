@@ -4,20 +4,18 @@ import (
 	"encoding/json"
 	"flag"
 	"github.com/eastata/demux/pkg/demux"
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"time"
 )
 
-// swagger:model CommonError
-type CommonError struct {
-	// Status of the error
-	// in: int64
-	Status int64 `json:"status"`
-	// Message of the error
+// swagger:model JobUUID
+type JobID struct {
 	// in: string
-	Message string `json:"message"`
+	// example: {'id": "75a9e835-5cd6-4499-bd2a-a066e335b963"}
+	Id uuid.UUID `json:"id"`
 }
 
 // swagger:parameters JobSubmit
@@ -62,10 +60,10 @@ func JobSubmit(w http.ResponseWriter, r *http.Request) {
 	//
 	// Submit the job for summing the list of int64
 	//
-	// This will submit the job to demux and return JobID
+	// This will submit the job to demux
 	//
 	//     Responses:
-	//       401: CommonError
+	//       200: JobUUID
 
 	w.Header().Set("Content-Type", "application/json")
 	var v jobRequest
@@ -75,8 +73,8 @@ func JobSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jb := demux.NewJob(v.Data)
-	demux.Scheduler([]demux.Job{jb})
+	go demux.Scheduler([]demux.Job{jb})
 
-	json.NewEncoder(w).Encode(v)
+	json.NewEncoder(w).Encode(JobID{jb.Id})
 
 }

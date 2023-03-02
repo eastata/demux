@@ -19,7 +19,7 @@
   "paths": {
     "/job_submit": {
       "post": {
-        "description": "This will submit the job to demux and return JobID",
+        "description": "This will submit the job to demux",
         "summary": "Submit the job for summing the list of int64",
         "operationId": "JobSubmit",
         "parameters": [
@@ -39,10 +39,10 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "CommonError",
+          "200": {
+            "description": "JobUUID",
             "schema": {
-              "$ref": "#/definitions/CommonError"
+              "$ref": "#/definitions/JobUUID"
             }
           }
         }
@@ -50,21 +50,18 @@
     }
   },
   "definitions": {
-    "CommonError": {
+    "JobUUID": {
       "type": "object",
       "properties": {
-        "message": {
-          "description": "Message of the error\nin: string",
+        "id": {
+          "description": "in: string",
           "type": "string",
-          "x-go-name": "Message"
-        },
-        "status": {
-          "description": "Status of the error\nin: int64",
-          "type": "integer",
-          "format": "int64",
-          "x-go-name": "Status"
+          "format": "uuid",
+          "x-go-name": "Id",
+          "example": "{\"id\": \"75a9e835-5cd6-4499-bd2a-a066e335b963\"}"
         }
       },
+      "x-go-name": "JobID",
       "x-go-package": "github.com/eastata/demux/cmd/api-server"
     }
   },

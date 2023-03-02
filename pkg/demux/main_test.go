@@ -7,7 +7,7 @@ import (
 
 func TestJobsGenerator(t *testing.T) {
 	jobs := JobsGenerator()
-	if jobs[0].id == jobs[2].id {
+	if jobs[0].Id == jobs[2].Id {
 		t.Errorf("Collision for generated jobs UUID")
 	}
 }
@@ -31,7 +31,7 @@ func BenchmarkScheduler(b *testing.B) {
 }
 
 func TestWorker(t *testing.T) {
-	jb := Job{id: uuid.New(), data: []int64{1, 2}}
+	jb := Job{Id: uuid.New(), data: []int64{1, 2}}
 
 	ch := make(chan jobResponse, 1)
 
@@ -43,7 +43,7 @@ func TestWorker(t *testing.T) {
 }
 
 func BenchmarkWorker(b *testing.B) {
-	jb := Job{id: uuid.New(), data: []int64{1, 2}}
+	jb := Job{Id: uuid.New(), data: []int64{1, 2}}
 	ch := make(chan jobResponse)
 
 	go func() {

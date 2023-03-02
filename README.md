@@ -16,11 +16,14 @@ go run main.go
 
 ### API server
 
-```shell
-git clone git@github.com:eastata/demux.git
-cd demux/cmd/api-server
-go run main.go
-```
+* [API Specification Markdowndocs](./docs/api.md)
+* [API Specification in OpenAPI 2.0 json](./swaggerui/swagger.json)
+* Run **Demux API server** with swagger:
+    ```shell
+    git clone git@github.com:eastata/demux.git
+    cd demux/cmd/api-server
+    go run main.go
+    ```
 
 ## Swagger UI
 
@@ -59,5 +62,6 @@ sed -i "s/https\:\/\/petstore\.swagger\.io\/v2\/swagger\.json/.\/swagger.json/" 
 # Generate swagger yaml spec
 swagger generate spec -o ./swaggerui/swagger.json -m -w ./cmd/api-server/
 
-
+# Generate ./docs/api.md form spec
+swagger generate markdown --skip-validation -f ./swaggerui/swagger.json --output="./docs/api.md"
 ```

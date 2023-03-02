@@ -8,7 +8,7 @@ import (
 )
 
 type Job struct {
-	id   uuid.UUID
+	Id   uuid.UUID
 	data []int64
 }
 
@@ -27,7 +27,6 @@ func NewJob(data []int64) Job {
 	id = uuid.New()
 	jb = Job{id, data}
 	return jb
-
 }
 
 func JobsGenerator() []Job {
@@ -55,17 +54,18 @@ func Scheduler(joblist []Job) {
 	for _, v := range joblist {
 		go worker(ch, v)
 	}
+	var resp jobResponse
 
 	for i := 0; i < len(joblist); i++ {
 		//There is a jobs response output
-		fmt.Println(<-ch)
-		//<-ch
+		resp = <-ch
+		fmt.Println("Job_uuid: ", resp.id, "\t sum: ", resp.out)
 	}
 
 }
 
 func worker(ch chan<- jobResponse, jb Job) error {
-	resp := jobResponse{id: jb.id, out: 0}
+	resp := jobResponse{id: jb.Id, out: 0}
 	for _, v := range jb.data {
 		resp.out += v
 	}
