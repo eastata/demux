@@ -27,6 +27,10 @@ RUN cd /demux && go build -o api-server /demux/cmd/api-server/main.go
 # Pull Demux into a second stage deploy alpine container
 FROM alpine:latest
 
+LABEL org.opencontainers.image.source=https://github.com/eastata/demux
+LABEL org.opencontainers.image.description="Demux API server with cli"
+LABEL org.opencontainers.image.licenses=GPLv3
+
 RUN apk add --no-cache ca-certificates
 COPY --from=builder /demux/swaggerui /swaggerui/
 COPY --from=builder /demux/cli /usr/local/bin/
