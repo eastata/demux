@@ -36,7 +36,6 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            eastata/demux
             ghcr.io/${{ github.repository }}
       
       - name: Docker build and push
