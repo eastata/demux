@@ -44,9 +44,9 @@ go tool cover -html=c.out
 * Run
   ```shell
   # CLI
-  docker run --rm -it eastata/demux cli
+  docker run --rm -it ghcr.io/eastata/demux cli
   # API server
-  docker run --rm -it -p 8080:8080 eastata/demux
+  docker run --rm -it -p 8080:8080 ghcr.io/eastata/demux
   ```
 
 ## Makefile draft
