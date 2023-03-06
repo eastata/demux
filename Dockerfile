@@ -21,8 +21,8 @@ ADD . /demux
 # Generate OpenAPI spec to /demux/swaggerui/swagger.json
 RUN /usr/local/bin/swagger generate spec -o /demux/swaggerui/swagger.json -m -w /demux/cmd/api-server/
 
-RUN cd /demux && go build -o cli /demux/cmd/cli/main.go
-RUN cd /demux && go build -o api-server /demux/cmd/api-server/main.go
+RUN cd /demux && go build -o cli /demux/cmd/cli/
+RUN cd /demux && go build -o api-server /demux/cmd/api-server/
 
 # Pull Demux into a second stage deploy alpine container
 FROM alpine:latest
@@ -35,6 +35,9 @@ RUN apk add --no-cache ca-certificates
 COPY --from=builder /demux/swaggerui /swaggerui/
 COPY --from=builder /demux/cli /usr/local/bin/
 COPY --from=builder /demux/api-server /usr/local/bin/
+
+ENV SERVER_ADDRESS=0.0.0.0
+ENV SERVER_PORT=8080
 
 EXPOSE 8080/tcp
 CMD ["api-server"]
