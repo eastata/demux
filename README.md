@@ -11,7 +11,7 @@ Runs a task in parallel
 ```shell
 git clone git@github.com:eastata/demux.git
 cd demux/cmd/cli
-go run main.go
+go run .
 ```
 
 ### API server
@@ -20,9 +20,11 @@ go run main.go
 * [API Specification in OpenAPI 2.0 json](./swaggerui/swagger.json)
 * Run **Demux API server** with swagger:
     ```shell
+    # export SERVER_ADDRESS=127.0.0.1
+    # export SERVER_PORT=8080
     git clone git@github.com:eastata/demux.git
     cd demux/cmd/api-server
-    go run main.go
+    go run .
     ```
 * Swagger UI: [http://127.0.0.1:8080/swaggerui/](http://127.0.0.1:8080/swaggerui/)
 
