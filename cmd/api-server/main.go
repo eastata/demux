@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/eastata/demux/internal/logger"
 	"github.com/eastata/demux/pkg/demux"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -31,7 +32,6 @@ type jobRequest struct {
 }
 
 func main() {
-	const listenaddr = "0.0.0.0:8080"
 	router := mux.NewRouter()
 
 	router.HandleFunc("/job_submit", JobSubmit).Methods("POST")
@@ -44,14 +44,16 @@ func main() {
 
 	router.PathPrefix("").Handler(http.StripPrefix("/swaggerui/", http.FileServer(http.Dir("./swaggerui"))))
 
-	fmt.Println("Demux API-Server is running at ", listenaddr)
+	address := "0.0.0.0"
+	port := "8080"
+
 	srv := &http.Server{
 		Handler:      router,
-		Addr:         listenaddr,
+		Addr:         fmt.Sprintf("%s:%s", address, port),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-
+	logger.Info(fmt.Sprintf("Starting Demux API-Server on %s:%s ...", address, port))
 	log.Fatal(srv.ListenAndServe())
 
 }
